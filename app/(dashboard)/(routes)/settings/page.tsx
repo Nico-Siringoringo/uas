@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button"
 import { useUser } from "@clerk/nextjs"
 import axios from "axios"
 import { useRouter } from "next/navigation"
+import CryptoJS from "crypto-js"
 
 const SettingsPage = () => {
   const router = useRouter()
@@ -37,8 +38,8 @@ const SettingsPage = () => {
 
         await axios.post("/api/settings", {
           email: email,
-          openai: secureLocalStorage.getItem("openapi"),
-          replicateai: secureLocalStorage.getItem("replicateapi")
+          openai: CryptoJS.SHA256(values.openapi).toString(),
+          replicateai: CryptoJS.SHA256(values.replicateapi).toString()
         })
 
         form.reset()
